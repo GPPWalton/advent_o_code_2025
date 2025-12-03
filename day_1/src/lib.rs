@@ -1,9 +1,11 @@
 pub mod day_1_solution {
+    #[derive(Debug)]
     enum Direction {
         L,
         R
     }
 
+    #[derive(Debug)]
     struct cmd {
         direction: Direction,
         num_shift: u32,
@@ -13,7 +15,7 @@ pub mod day_1_solution {
         let split_cmd  = cmd.split_at(1);
         if split_cmd.0 == "L" {
             parsed_cmd = cmd {
-                direction: Direction::R,
+                direction: Direction::L,
                num_shift:  split_cmd.1.parse().unwrap(),
             };
             parsed_cmd
@@ -31,7 +33,7 @@ pub mod day_1_solution {
     }
 
         
-    fn shift_dial (cmd: String) -> i32 {
+    // fn shift_dial (cmd: String) -> i32 {
 
-    }
+    // }
 }
