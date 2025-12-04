@@ -8,7 +8,7 @@ pub mod day_1_solution {
     #[derive(Debug)]
     struct cmd {
         direction: Direction,
-        num_shift: u32,
+        num_shift: u16,
     }
     pub(self) fn parse_cmd(cmd: &String)-> cmd{
         let mut parsed_cmd: cmd;
@@ -30,12 +30,28 @@ pub mod day_1_solution {
         }
     }
 
-    fn shift_left(shift_value: u32 , cur_pos: i32) -> i32{
+    fn shift_left(shift_value: u16 , cur_pos: i32) -> i32{
+        let shift = i32::from(shift_value);
+        let true_pos = cur_pos - shift;
 
+        if true_pos.is_negative(){
+            //if negative, subtract the the true position from the max dial value
+            99 + true_pos
+        }else{
+            true_pos
+        }
     }
 
-    fn shift_right(shift_value: u32 , cur_pos: i32) ->i32{
+    fn shift_right(shift_value: u16 , cur_pos: i32) ->i32{
+        let shift = i32::from(shift_value);
+        let true_pos = cur_pos + shift;
 
+        if true_pos > 99 {
+            //if over 99, find the difference between the max and the true pos
+            true_pos - 99
+        }else{
+            true_pos
+        }
     }
   
     fn shift_dial (cmd: String, cur_pos: i32) -> i32 {
