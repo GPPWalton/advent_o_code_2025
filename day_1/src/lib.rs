@@ -28,12 +28,30 @@ pub mod day_1_solution {
         } else{
             panic!("Invalid command")
         }
-        
-        
     }
 
-        
-    // fn shift_dial (cmd: String) -> i32 {
+    fn shift_left(shift_value: u32 , cur_pos: i32) -> i32{
 
-    // }
+    }
+
+    fn shift_right(shift_value: u32 , cur_pos: i32) ->i32{
+
+    }
+  
+    fn shift_dial (cmd: String, cur_pos: i32) -> i32 {
+        //takes a command and returns the new position of the dial
+        let parsed_cmd = parse_cmd(&cmd);
+        let mut new_pos: i32;
+        match parsed_cmd.direction {
+            Direction::L => {
+            new_pos = shift_left(parsed_cmd.num_shift, cur_pos);
+            },
+            Direction::R => {
+                new_pos = shift_right(parsed_cmd.num_shift, cur_pos);
+            }
+            
+        }
+        new_pos
+
+    }
 }
