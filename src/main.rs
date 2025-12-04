@@ -1,15 +1,12 @@
-use day_1::day_1_solution;
+use day_1::day_1_solution::{read_cmd_file};
 
 fn day_1 () {
-    //dial
-    let mut dial = Vec::new();
-    for i in 0..100{
-        dial.push(i);
-    }
-    //arrow that shows current dial position
-    let mut cur_pos = 0;
-    let mut ctr = 0;
+    //arrow that shows current dial position, starts ar 50
+    let  starting_pos = 50;
+    let ctr = read_cmd_file(starting_pos);
+
+    println!("True code:    {}", ctr);
 }
 fn main() {
-    day_1()
+    day_1()    
 }
