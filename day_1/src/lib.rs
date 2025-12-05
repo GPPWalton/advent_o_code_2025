@@ -35,52 +35,60 @@ pub mod day_1_solution {
         }
     }
 
-    fn shift_left(shift_value: u16 , cur_pos: i32) -> i32{
+    fn shift_left(shift_value: u16 , cur_pos: i32, method_flag: bool, ctr: i32) -> (i32, i32){
         let shift = i32::from(shift_value);
         let mut true_pos = cur_pos - shift;
+        let mut ctr = ctr;
 
         if true_pos.is_negative(){
             //if negative, subtract the the true position from the max dial value
             while true_pos.is_negative(){
                 true_pos += 100 ;
+                // if using the part 2 method, trigger this
+                if method_flag{
+                    ctr+=1;
+                }
             }
-            true_pos
+            (true_pos, ctr)
         }else{
-            true_pos
+            (true_pos, ctr)
         }
     }
 
-    fn shift_right(shift_value: u16 , cur_pos: i32) ->i32{
+    fn shift_right(shift_value: u16 , cur_pos: i32, method_flag: bool, ctr: i32) -> (i32,i32){
         let shift = i32::from(shift_value);
         let mut true_pos = cur_pos + shift;
+        let mut ctr = ctr;
         if true_pos > 99 {
             //if over 99, find the difference between the max and the true pos
             while true_pos > 99{
                 true_pos -= 100;
+                // if using the part 2 method, trigger this
+                if method_flag {
+                    ctr+=1;
+                }
             }
-            true_pos
+            (true_pos, ctr)
         }else{
-            true_pos
+            (true_pos, ctr)
         }
     }
   
-    fn shift_dial (cmd: String, cur_pos: i32) -> i32 {
+    fn shift_dial (cmd: String, cur_pos: i32, method_flag: bool, ctr: i32) -> (i32, i32) {
         //takes a command and returns the new position of the dial
         let parsed_cmd = parse_cmd(&cmd);
         let new_pos: i32;
+        let mut cur_ctr = ctr;
         match parsed_cmd.direction {
             Direction::L => {
-            new_pos = shift_left(parsed_cmd.num_shift, cur_pos);
+            (new_pos, cur_ctr) = shift_left(parsed_cmd.num_shift, cur_pos, method_flag, cur_ctr);
             },
             Direction::R => {
-                new_pos = shift_right(parsed_cmd.num_shift, cur_pos);
+                (new_pos, cur_ctr) = shift_right(parsed_cmd.num_shift, cur_pos, method_flag, cur_ctr);
             }
             
         }
-        if new_pos < 0 || new_pos > 99{
-            panic!("SOMETHING WRONG, POS: {}", new_pos);
-        }
-        new_pos
+        (new_pos, cur_ctr)
     }
     // The output is wrapped in a Result to allow matching on errors.
 // Returns an Iterator to the Reader of the lines of the file.
@@ -90,7 +98,7 @@ pub mod day_1_solution {
         Ok(io::BufReader::new(file).lines())
     }
 
-    pub fn read_cmd_file(cur_pos: i32) -> i32 {
+    pub fn read_cmd_file(cur_pos: i32, method_flag: bool) -> i32 {
         //read file, process commands and output counter value
         // File hosts.txt must exist in the current path
         let mut pos = cur_pos;
@@ -98,9 +106,10 @@ pub mod day_1_solution {
         if let Ok(lines) = read_lines("./day_1/src/input.txt") {
             // Consumes the iterator, returns an (Optional) String
             for line in lines.map_while(Result::ok) {
-                pos = shift_dial(line, pos);
+                (pos, ctr) = shift_dial(line, pos, method_flag, ctr);
+                println!("pos:  {} - ctr:   {}", pos, ctr);
 
-                if pos == 0{
+                if pos == 0 && !method_flag{
                     ctr += 1;
                 }
             }

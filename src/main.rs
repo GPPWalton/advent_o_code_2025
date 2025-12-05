@@ -1,4 +1,3 @@
-use std::process;
 use std::{env, ffi::OsString};
 use std::error::Error;
 use day_1::day_1_solution::{read_cmd_file};
@@ -6,12 +5,12 @@ use day_1::day_1_solution::{read_cmd_file};
 fn day_1 (method_flag: bool) {
     //arrow that shows current dial position, starts ar 50
     let  starting_pos = 50;
-    let ctr = read_cmd_file(starting_pos);
+    let ctr = read_cmd_file(starting_pos, method_flag);
 
     println!("True code:    {}", ctr);
 }
 
-fn get_arg() -> Result<(bool), Box<dyn Error>> {
+fn get_arg() -> Result<bool, Box<dyn Error>> {
     //check first flag
     match env::args_os().nth(1) {
         //if no flaf, run as normal
@@ -37,7 +36,6 @@ fn get_arg() -> Result<(bool), Box<dyn Error>> {
     }
 }
 fn main() {
-    //figure this out
     let method_flag = match get_arg(){
         Ok(flag) => flag,
         Err(err) => panic!("{:?}",err)
