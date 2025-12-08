@@ -15,8 +15,8 @@ fn get_arg() -> Result<bool, Box<dyn Error>> {
     match env::args_os().nth(1) {
         //if no flaf, run as normal
         None => Ok(false),
-        Some(argument)=> {if argument == OsString::from("--method")
-                                    || argument == OsString::from("-m")
+        Some(argument)=> {if argument == OsString::from("method")
+                                    || argument == OsString::from("m")
             {
                 //check value of flag
                match  env::args_os().nth(2) {

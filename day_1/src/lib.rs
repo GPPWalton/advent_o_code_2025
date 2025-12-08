@@ -37,18 +37,25 @@ pub mod day_1_solution {
 
     fn shift_left(shift_value: u16 , cur_pos: i32, method_flag: bool, ctr: i32) -> (i32, i32){
         let shift = i32::from(shift_value);
-        let mut true_pos = cur_pos - shift;
+        //if current position is at 0, treat it as 100;
+        let mut true_pos = if cur_pos == 0 {100 - shift} else {cur_pos - shift};
         let mut ctr = ctr;
-
-        if true_pos.is_negative(){
-            //if negative, subtract the the true position from the max dial value
-            while true_pos.is_negative(){
-                true_pos += 100 ;
-                // if using the part 2 method, trigger this
-                if method_flag{
-                    ctr+=1;
-                }
+        println!("ctr {}",ctr);
+        println!("L shift:  {}", shift);
+        if method_flag{
+                println!("L pos:  {}", true_pos);
+                // check rounding!!!
+                // ctr += i32::abs((if true_pos > -99 && true_pos < 0 {(true_pos)-100}else{true_pos}/100));
+                ctr += i32::abs((true_pos-100)/100);
+                println!(" method ctr:  {}", ctr);
             }
+        if true_pos.is_negative()  {
+            //if negative, subtract the the true position from the max dial value    
+            
+            while true_pos.is_negative(){
+                true_pos += 100;  
+            }
+            println!("final pos:   {}", true_pos);
             (true_pos, ctr)
         }else{
             (true_pos, ctr)
@@ -59,15 +66,20 @@ pub mod day_1_solution {
         let shift = i32::from(shift_value);
         let mut true_pos = cur_pos + shift;
         let mut ctr = ctr;
-        if true_pos > 99 {
+        println!("R shift:  {}", shift);
+
+         if method_flag{
+                println!(" R pos:  {}", true_pos);
+                ctr += i32::abs((true_pos)/100);
+                println!(" method ctr:  {}", ctr);
+            }
+        if true_pos > 0{
             //if over 99, find the difference between the max and the true pos
+           
             while true_pos > 99{
                 true_pos -= 100;
-                // if using the part 2 method, trigger this
-                if method_flag {
-                    ctr+=1;
-                }
             }
+            println!("final pos:   {}", true_pos);
             (true_pos, ctr)
         }else{
             (true_pos, ctr)
@@ -90,8 +102,8 @@ pub mod day_1_solution {
         }
         (new_pos, cur_ctr)
     }
-    // The output is wrapped in a Result to allow matching on errors.
-// Returns an Iterator to the Reader of the lines of the file.
+
+    // Returns an Iterator to the reader of the lines of the file.
     fn read_lines<P: AsRef<Path>>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
     {
         let file = File::open(filename)?;
@@ -107,7 +119,6 @@ pub mod day_1_solution {
             // Consumes the iterator, returns an (Optional) String
             for line in lines.map_while(Result::ok) {
                 (pos, ctr) = shift_dial(line, pos, method_flag, ctr);
-                println!("pos:  {} - ctr:   {}", pos, ctr);
 
                 if pos == 0 && !method_flag{
                     ctr += 1;
