@@ -74,10 +74,8 @@ fn get_arg() -> Result<Advent, Box<dyn Error>> {
     }
 }
 fn main() {
-    let cmd_arg = match get_arg(){
+    select_day(match get_arg(){
         Ok(cmd) => cmd,
         Err(err) => panic!("{:?}",err)
-    };
-    
-    select_day(cmd_arg);
+    });
 }
