@@ -4,8 +4,8 @@ pub mod day_2_solution{
 
 #[derive(Debug)]
     struct Range {
-        first_id: u16,
-        last_id: u16,
+        first_id: usize,
+        last_id: usize,
     }
 
      // TODO: make this more global
@@ -15,20 +15,16 @@ pub mod day_2_solution{
         Ok(io::BufReader::new(file).lines())
     }
 
-    fn split_digits(input: u16) -> Vec<u16> {
+    fn split_digits(input: usize) -> usize{
         let mut input = input;
         let mut split_num = Vec::with_capacity(10);
-        println!("starting input:    {}", input);
         while input > 0 {
             let digit = input % 10;
-            println!("digit:    {}", digit);
             input = input / 10;
-            println!("input:    {}", input);
             split_num.push(digit);
         }
         split_num.reverse();
-        println!("{:?}",split_num);
-        split_num
+        split_num.len()
         
     }
 
@@ -36,23 +32,46 @@ pub mod day_2_solution{
     fn parse_range (raw_range: &String) -> Range {
         //split by hyphen
         let range: Vec<&str> = raw_range.split("-").collect();
-        //conver string to u16
-        println!("{:?}", range);
         //parse into struct
         Range {
             first_id: range[0].parse().unwrap(),
             last_id: range[1].parse().unwrap()
         }
     }
+    //take a number split into digits, find a repeating pattern if it exists
+    fn find_pattern (id_len: usize,id: usize) -> (String, String) {
+        //convert id into string,
+        let str_id = id.to_string();
 
-    fn find_invalid (range: Range) -> i32 {
+        //return as tuple for comparison
 
+        (str_id[..id_len/2].to_string(),str_id[id_len/2..].to_string())
+        
+    }
+    fn find_invalid (range: Range, ctr: usize) -> usize {
+        let mut ctr =  ctr;
+        for id in range.first_id..(range.last_id +1){
+
+            let id_len = split_digits(id);
+            //if it is an even number, perform operations
+            if id_len % 2 == 0 {
+                
+                let chunks = find_pattern(id_len,id);
+                if chunks.0 == chunks.1 {
+                    ctr += id;
+                }
+            }
+            else{
+                continue;
+            }
+        }
+        ctr
     }
     //TODO: make this global
-    pub fn read_cmd_file() -> i32 {
+    pub fn read_cmd_file() -> usize {
         //read file, process commands and output counter value
         // File hosts.txt must exist in the current path
-        let ctr = 0;
+        let mut ctr = 0;
         if let Ok(lines) = read_lines("./day_2/src/input.txt") {
             // Consumes the iterator, returns an (Optional) String
 
@@ -61,7 +80,8 @@ pub mod day_2_solution{
                 let ranges: Vec<&str>  = line.split(',').collect();
                 //for each range
                 for range in ranges{
-                    parse_range(&String::from(range));
+                    let  parsed_range = parse_range(&String::from(range));
+                    ctr = find_invalid(parsed_range, ctr);
                 }
             }
             ctr
