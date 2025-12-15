@@ -35,14 +35,14 @@ pub mod day_1_solution {
         }
     }
 
-    fn shift_left(shift_value: u16 , cur_pos: i32, method_flag: bool, ctr: i32) -> (i32, i32){
+    fn shift_left(shift_value: u16 , cur_pos: i32, p2_flag: bool, ctr: i32) -> (i32, i32){
         let shift = i32::from(shift_value);
         //if current position is at 0, treat it as 100;
         let mut true_pos = if cur_pos == 0 {100 - shift} else {cur_pos - shift};
         let mut ctr = ctr;
         println!("ctr {}",ctr);
         println!("L shift:  {}", shift);
-        if method_flag{
+        if p2_flag{
                 println!("L pos:  {}", true_pos);
                 // check rounding!!!
                 // ctr += i32::abs((if true_pos > -99 && true_pos < 0 {(true_pos)-100}else{true_pos}/100));
@@ -62,13 +62,13 @@ pub mod day_1_solution {
         }
     }
 
-    fn shift_right(shift_value: u16 , cur_pos: i32, method_flag: bool, ctr: i32) -> (i32,i32){
+    fn shift_right(shift_value: u16 , cur_pos: i32, p2_flag: bool, ctr: i32) -> (i32,i32){
         let shift = i32::from(shift_value);
         let mut true_pos = cur_pos + shift;
         let mut ctr = ctr;
         println!("R shift:  {}", shift);
 
-         if method_flag{
+         if p2_flag{
                 println!(" R pos:  {}", true_pos);
                 ctr += i32::abs((true_pos)/100);
                 println!(" method ctr:  {}", ctr);
@@ -86,17 +86,17 @@ pub mod day_1_solution {
         }
     }
   
-    fn shift_dial (cmd: String, cur_pos: i32, method_flag: bool, ctr: i32) -> (i32, i32) {
+    fn shift_dial (cmd: String, cur_pos: i32, p2_flag: bool, ctr: i32) -> (i32, i32) {
         //takes a command and returns the new position of the dial
         let parsed_cmd = parse_cmd(&cmd);
         let new_pos: i32;
         let mut cur_ctr = ctr;
         match parsed_cmd.direction {
             Direction::L => {
-            (new_pos, cur_ctr) = shift_left(parsed_cmd.num_shift, cur_pos, method_flag, cur_ctr);
+            (new_pos, cur_ctr) = shift_left(parsed_cmd.num_shift, cur_pos, p2_flag, cur_ctr);
             },
             Direction::R => {
-                (new_pos, cur_ctr) = shift_right(parsed_cmd.num_shift, cur_pos, method_flag, cur_ctr);
+                (new_pos, cur_ctr) = shift_right(parsed_cmd.num_shift, cur_pos, p2_flag, cur_ctr);
             }
             
         }
@@ -110,7 +110,7 @@ pub mod day_1_solution {
         Ok(io::BufReader::new(file).lines())
     }
 
-    pub fn read_cmd_file(cur_pos: i32, method_flag: bool) -> i32 {
+    pub fn read_cmd_file(cur_pos: i32, p2_flag: bool) -> i32 {
         //read file, process commands and output counter value
         // File hosts.txt must exist in the current path
         let mut pos = cur_pos;
@@ -118,9 +118,9 @@ pub mod day_1_solution {
         if let Ok(lines) = read_lines("./day_1/src/input.txt") {
             // Consumes the iterator, returns an (Optional) String
             for line in lines.map_while(Result::ok) {
-                (pos, ctr) = shift_dial(line, pos, method_flag, ctr);
+                (pos, ctr) = shift_dial(line, pos, p2_flag, ctr);
 
-                if pos == 0 && !method_flag{
+                if pos == 0 && !p2_flag{
                     ctr += 1;
                 }
             }

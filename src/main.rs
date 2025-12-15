@@ -29,13 +29,12 @@ fn day_1 () {
         //run without flag
         ctr = day_1_solution::read_cmd_file(starting_pos, false);
     },
-    Some(argument) => { if argument == OsString::from("method")
-                        || argument == OsString::from("m")
+    Some(argument) => { if argument == OsString::from("part_2")
     {
         ctr =  day_1_solution::read_cmd_file(starting_pos, true);
     }
     else{
-        panic!("2nd argument is invalid, if using new protocols, try 'method'/'m'")
+        panic!("2nd argument is invalid, if using new protocols, try 'part_2'/'m'")
     }}
     }
     println!("True code:    {}", ctr);
@@ -43,8 +42,22 @@ fn day_1 () {
 fn day_2(){
     let ctr: usize;
 
-    ctr = day_2_solution::read_cmd_file();
-
+    
+      match  env::args_os().nth(2) {
+    //if no flag for day_1 run as normal.
+    None => {
+        //run without flag
+        ctr = day_2_solution::read_cmd_file(false);
+    },
+    Some(argument) => { if argument == OsString::from("part_2")
+    {
+       //part_2 solution
+        ctr = day_2_solution::read_cmd_file(true);
+    }
+    else{
+        panic!("2nd argument is invalid, if using new protocols, try 'part_2'/'m'")
+    }}
+    }
     println!("The sum of invalid ids is:    {}", ctr);
 }
 fn select_day (cmd: Advent) {

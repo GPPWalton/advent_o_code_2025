@@ -8,11 +8,10 @@ I've included some instructions on how to use the repo below, this will no doubt
 
 ## Commands
 
-**To run the project** - `cargo run [day_n] [m/method]` _where n is the day of the challenge and m/method is used to show the second part of the solution._
+**To run the project** - `cargo run [day_n] [part_2]` _where n is the day of the challenge and m/method is used to show the second part of the solution._
 
 for example day 1 would be:
 `cargo run day_1` for part 1
 
 **And**
-
-`cargo run day_1 m` **or** `cargo run day_1 method` for part 2.
+`cargo run day_1 part_2` for part 2.

@@ -39,36 +39,50 @@ pub mod day_2_solution{
         }
     }
     //take a number split into digits, find a repeating pattern if it exists
-    fn find_pattern (id_len: usize,id: usize) -> (String, String) {
+    fn find_pattern (id_len: usize,id: usize, p2_flag: bool) -> bool {
         //convert id into string,
         let str_id = id.to_string();
+        if !p2_flag {
+            if (str_id[..id_len/2].to_string() == str_id[id_len/2..].to_string()) {
+                true
+            }
+            else {
+                false
+            }
+        }
+        else {
+        // Try all possible pattern lengths from 1 to n/2
+            for pattern_len in 1..=id_len / 2 {
+                //if the pattern divides evenly with the id length
+                if id_len % pattern_len == 0 {
+                    //extract pattern
+                    let pattern: String = str_id[0..pattern_len].to_string();
+                    //repeat pattern to length of original id.
+                    let repeated = pattern.repeat(id_len / pattern_len);
+                    if repeated == id.to_string() {
+                        //if it matches, then return true
+                         return true
+                    }
+                }
+            }
+            false
+        }
 
-        //return as tuple for comparison
-
-        (str_id[..id_len/2].to_string(),str_id[id_len/2..].to_string())
-        
     }
-    fn find_invalid (range: Range, ctr: usize) -> usize {
+    fn find_invalid (range: Range, ctr: usize, p2_flag: bool) -> usize {
         let mut ctr =  ctr;
         for id in range.first_id..(range.last_id +1){
 
             let id_len = split_digits(id);
-            //if it is an even number, perform operations
-            if id_len % 2 == 0 {
-                
-                let chunks = find_pattern(id_len,id);
-                if chunks.0 == chunks.1 {
-                    ctr += id;
-                }
-            }
-            else{
-                continue;
+
+            if find_pattern(id_len, id, p2_flag){
+                ctr += id;
             }
         }
         ctr
     }
     //TODO: make this global
-    pub fn read_cmd_file() -> usize {
+    pub fn read_cmd_file(p2_flag: bool) -> usize {
         //read file, process commands and output counter value
         // File hosts.txt must exist in the current path
         let mut ctr = 0;
@@ -81,7 +95,7 @@ pub mod day_2_solution{
                 //for each range
                 for range in ranges{
                     let  parsed_range = parse_range(&String::from(range));
-                    ctr = find_invalid(parsed_range, ctr);
+                    ctr = find_invalid(parsed_range, ctr, p2_flag);
                 }
             }
             ctr
