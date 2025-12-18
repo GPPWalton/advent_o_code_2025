@@ -84,7 +84,6 @@ pub mod day_2_solution{
     //TODO: make this global
     pub fn read_cmd_file(p2_flag: bool) -> usize {
         //read file, process commands and output counter value
-        // File hosts.txt must exist in the current path
         let mut ctr = 0;
         if let Ok(lines) = read_lines("./day_2/src/input.txt") {
             // Consumes the iterator, returns an (Optional) String

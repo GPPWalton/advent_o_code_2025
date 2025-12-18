@@ -112,7 +112,6 @@ pub mod day_1_solution {
 
     pub fn read_cmd_file(cur_pos: i32, p2_flag: bool) -> i32 {
         //read file, process commands and output counter value
-        // File hosts.txt must exist in the current path
         let mut pos = cur_pos;
         let mut ctr = 0;
         if let Ok(lines) = read_lines("./day_1/src/input.txt") {

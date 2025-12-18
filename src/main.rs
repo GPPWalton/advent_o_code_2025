@@ -2,6 +2,7 @@ use std::{env, ffi::OsString};
 use std::error::Error;
 use day_1::day_1_solution;
 use day_2::day_2_solution;
+use day_3::day_3_solution;
 
 enum Advent {
     Day1,
@@ -62,7 +63,11 @@ fn day_2(){
 }
 
 fn day_3(){
-
+    let total_jolt: u32;
+    
+    total_jolt = day_3_solution::read_cmd_file();
+    
+    println!("The total joltage is:    {}", total_jolt);
 }
 
 fn select_day (cmd: Advent) {
@@ -94,7 +99,7 @@ fn get_arg() -> Result<Advent, Box<dyn Error>> {
             else if argument == OsString::from("day_2") {
                 Ok(Advent::Day2)
             }
-            else if argument == OsString::from("day_2") {
+            else if argument == OsString::from("day_3") {
                 Ok(Advent::Day3)
             }
             else{
@@ -107,5 +112,8 @@ fn main() {
         Ok(cmd) => cmd,
         Err(err) => panic!("{:?}",err)
     });
+    // let arr: [char; 15 ] = ['2','3','4','2','3','4','2','3','4','2','3','4','2','7','8'];
+
+    // println!("{:?}", arr[13..].to_vec());
 
 }
