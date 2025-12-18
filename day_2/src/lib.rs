@@ -43,7 +43,7 @@ pub mod day_2_solution{
         //convert id into string,
         let str_id = id.to_string();
         if !p2_flag {
-            if (str_id[..id_len/2].to_string() == str_id[id_len/2..].to_string()) {
+            if str_id[..id_len/2].to_string() == str_id[id_len/2..].to_string() {
                 true
             }
             else {

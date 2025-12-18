@@ -60,11 +60,16 @@ fn day_2(){
     }
     println!("The sum of invalid ids is:    {}", ctr);
 }
+
+fn day_3(){
+
+}
+
 fn select_day (cmd: Advent) {
     match cmd {
         Advent::Day1 => day_1(),
         Advent::Day2 =>day_2(),
-        Advent::Day3 =>{},
+        Advent::Day3 =>day_3(),
         Advent::Day4 =>{},
         Advent::Day5 =>{},
         Advent::Day6 =>{},
@@ -88,6 +93,9 @@ fn get_arg() -> Result<Advent, Box<dyn Error>> {
             }
             else if argument == OsString::from("day_2") {
                 Ok(Advent::Day2)
+            }
+            else if argument == OsString::from("day_2") {
+                Ok(Advent::Day3)
             }
             else{
                 Err(From::from("Invalid argument"))
