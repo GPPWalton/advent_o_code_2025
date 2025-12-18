@@ -4,7 +4,7 @@ pub mod day_3_solution {
     struct Bank {
         battery_row: Vec<char>,
     }
-    fn search_bank(battery_row: &Vec<char>, second_found: bool) -> (bool, u32, usize)
+    fn search_bank(battery_row: &Vec<char>) -> (bool, u32, usize)
     {
         let mut index = 0;
         let mut result = 0;
@@ -14,7 +14,7 @@ pub mod day_3_solution {
         // println!("digitised:    {}", digitised_bat);
         if  digitised_bat > result {
             //check if battery is last in row
-            if i + 1 == battery_row.len() && !second_found {
+            if i + 1 == battery_row.len() {
                 result = digitised_bat;
                 println!("last digit is highest:    {}", result);
                 return (true, result, i)
@@ -36,16 +36,16 @@ pub mod day_3_solution {
         let mut cur_row = bank.battery_row;
         let mut first_digit = 0;
         let mut second_digit = 0;
-        let mut second_found = false;
         for _digit in 0..2{
-            let (is_second, result, index) = search_bank(&cur_row, second_found);
+            let (is_second, result, index) = search_bank(&cur_row);
             if is_second || first_digit != 0  {
                 second_digit = result;
                 //slice row at second digit, since it is either the last one, or the loop will end anyway
                 // is this even worth it?
                 println!("second digit:     {}", second_digit);
                 cur_row = cur_row[..index].to_vec();
-                second_found = true;
+                //replace last value with 1 to allow search to not duplicate choice
+                cur_row.push('1');
             }
             else {
                 first_digit = result * 10;
@@ -68,7 +68,7 @@ pub mod day_3_solution {
     fn parse_bank(line: String) -> Bank {
         Bank { battery_row: line.chars().collect() }
     }
-    pub fn read_cmd_file() -> u32 {
+    pub fn read_cmd_file(p2_flag: bool) -> u32 {
         //read file, process commands and output counter value
         let mut max_jolt = 0;
         if let Ok(lines) = read_lines("./day_3/src/input.txt") {
@@ -77,7 +77,12 @@ pub mod day_3_solution {
             //will only run once, more efficient way to do this?
             for line in lines.map_while(Result::ok) {
                 let bank: Bank = parse_bank(line);
-                max_jolt += find_max_joltage(bank);
+                if !p2_flag {
+                max_jolt += find_max_joltage(bank);                    
+                }
+                else{
+                    //for part 2, make a new function, can't sort as it still needs to pick digits
+                }
             }
             max_jolt
         }

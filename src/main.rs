@@ -44,7 +44,7 @@ fn day_2(){
     let ctr: usize;
 
     
-      match  env::args_os().nth(2) {
+    match  env::args_os().nth(2) {
     //if no flag for day_1 run as normal.
     None => {
         //run without flag
@@ -65,8 +65,22 @@ fn day_2(){
 fn day_3(){
     let total_jolt: u32;
     
-    total_jolt = day_3_solution::read_cmd_file();
-    
+  
+    match  env::args_os().nth(2) {
+    //if no flag for day_1 run as normal.
+    None => {
+        //run without flag
+         total_jolt = day_3_solution::read_cmd_file(false);
+    },
+    Some(argument) => { if argument == OsString::from("part_2")
+    {
+       //part_2 solution
+         total_jolt = day_3_solution::read_cmd_file(true);
+    }
+    else{
+        panic!("2nd argument is invalid, if using new protocols, try 'part_2'/'m'")
+    }}
+    }
     println!("The total joltage is:    {}", total_jolt);
 }
 
