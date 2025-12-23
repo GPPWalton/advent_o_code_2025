@@ -63,9 +63,9 @@ fn day_2(){
 }
 
 fn day_3(){
-    let total_jolt: u32;
+    let total_jolt: usize;
     
-  
+
     match  env::args_os().nth(2) {
     //if no flag for day_1 run as normal.
     None => {
@@ -126,8 +126,5 @@ fn main() {
         Ok(cmd) => cmd,
         Err(err) => panic!("{:?}",err)
     });
-    // let arr: [char; 15 ] = ['2','3','4','2','3','4','2','3','4','2','3','4','2','7','8'];
-
-    // println!("{:?}", arr[13..].to_vec());
 
 }
